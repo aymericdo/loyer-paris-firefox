@@ -1,0 +1,63 @@
+{
+  "name": "Encadrement loyers paris",
+  "version": "3.3",
+  "description": "Cette extension permet de savoir si le prix de votre loyer (ou futur loyer) est 'potentiellement' légal ou non.",
+  "permissions": [
+    "storage",
+    "tabs",
+    "*://localhost/*",
+    "*://encadrement-loyers.herokuapp.com/*"
+  ],
+  "page_action": {
+    "default_icon": {
+      "16": "images/favicon-16x16.png",
+      "32": "images/favicon-32x32.png",
+      "48": "images/favicon-48x48.png",
+      "128": "images/favicon-128x128.png"
+    },
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.seloger.com/*",
+        "https://www.leboncoin.fr/*",
+        "https://www.loueragile.fr/*",
+        "https://www.pap.fr/*",
+        "https://www.logic-immo.com/*",
+        "https://immobilier.lefigaro.fr/*"
+      ],
+      "js": [
+        "helper/api.helper.js",
+        "service/seloger.service.js",
+        "service/leboncoin.service.js",
+        "service/loueragile.service.js",
+        "service/pap.service.js",
+        "service/logicimmo.service.js",
+        "service/lefigaro.service.js",
+        "custom.js"
+      ],
+      "run_at": "document_end",
+      "css": [
+        "custom.css"
+      ]
+    }
+  ],
+  "icons": {
+    "16": "images/favicon-16x16.png",
+    "32": "images/favicon-32x32.png",
+    "48": "images/favicon-48x48.png",
+    "128": "images/favicon-128x128.png"
+  },
+  "manifest_version": 2,
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "aymeric.dominique@gmail.com"
+    }
+  }
+}
