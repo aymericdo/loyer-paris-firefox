@@ -8,6 +8,8 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
 browser.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     browser.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
-        browser.tabs.sendMessage(tabs[0].id, { message: 'urlHasChanged' })
+        if (tabs.length) {
+            browser.tabs.sendMessage(tabs[0].id, { message: 'urlHasChanged' })
+        }
     })
 })
