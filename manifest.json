@@ -4,7 +4,6 @@
   "description": "Cette extension permet de savoir si le prix de votre loyer (ou futur loyer) est 'potentiellement' légal ou non.",
   "permissions": [
     "storage",
-    "*://localhost/*",
     "*://encadrement-loyers.herokuapp.com/*"
   ],
   "page_action": {
