@@ -23,7 +23,6 @@ const getDataFromPapDOM = () => {
 
     let surface = null
     let rooms = null
-    let furnished = null
 
     itemTags.forEach(tag => {
         if (tag.textContent.match(/m²/g)) {
@@ -41,7 +40,6 @@ const getDataFromPapDOM = () => {
         id: getIdFromPapUrl(),
         cityLabel: cityLabel && cityLabel.textContent,
         description: description && description.textContent,
-        furnished: furnished && furnished.textContent,
         price: price && price.textContent,
         rooms: rooms && rooms.textContent,
         stations: stations && stations.map(station => station.textContent),
