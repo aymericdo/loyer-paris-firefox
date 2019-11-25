@@ -18,6 +18,10 @@ const getDataFromOrpiDOM = () => {
     const dataDOM = document.querySelector('[data-component=estate-bookmark]')
     const data = JSON.parse(dataDOM.dataset.eulerianAction)
     const description = document.querySelector('div.o-container > p')
+    const chargesElement = [...document.querySelectorAll('.o-grid > .o-grid__col .u-list-unstyled.u-text-xs > li')]
+    const charges = chargesElement.find(element => element.textContent.search('Provisions pour charges') !== -1)
+    const hasChargesElement = document.querySelector('p.u-mt-n > span.u-h1')
+    const hasCharges = hasChargesElement && hasChargesElement.parentNode && hasChargesElement.parentNode.textContent.includes('charges comprises')
 
     return {
         id: data.prdref,
@@ -26,6 +30,8 @@ const getDataFromOrpiDOM = () => {
             lng: data.longitude,
             lat: data.latitude,
         },
+        charges: charges && charges.textContent,
+        hasCharges,
         description: description && description.textContent,
         furnished: !!data.meuble,
         postalCode: data.codePostal,

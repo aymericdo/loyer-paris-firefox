@@ -18,9 +18,16 @@ let currentDomain = getDomain()
 let currentId = getIdByDomain()
 let currentAd = null
 
+const fireKeyword =
+    currentDomain === 'seloger' ? selogerFireKeyword()
+        : currentDomain === 'leboncoin' ? leboncoinFireKeyword()
+            : null
+
 const activateTab = () => {
-    browser.storage.sync.set({ ad: { ...currentAd } })
-    browser.runtime.sendMessage({ message: 'activateIcon' })
+    if (browser.storage && currentAd) {
+        browser.storage.sync.set({ ad: { ...currentAd } })
+        browser.runtime.sendMessage({ message: 'activateIcon' })
+    }
 }
 
 const deactivateTab = () => {
@@ -195,25 +202,58 @@ const requestResolver = (request, catchCallback) => {
 
 const handleSuccess = (myJson) => {
     currentAd = { ...myJson }
-    setTimeout(() => {
-        customizeTab()
-    }, 1000)
+    customizeTab()
 }
 
+let isFetched = false
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.message === 'urlHasChanged') {
         const newDomain = getDomain()
         const newId = getIdByDomain()
         if (newId === null) {
             deactivateTab()
+            observer.disconnect()
         } else if (currentDomain !== newDomain || currentId !== newId) {
             currentDomain = newDomain
             currentId = newId
-            setTimeout(fetchData, 2000)
+            isFetched = false
+            letsObserve()
         }
     }
 })
 
+const observer = new MutationObserver((mutations, observer) => {
+    mutations.forEach((mutation) => {
+        if (!mutation.addedNodes) return
+
+        for (let i = 0; i < mutation.addedNodes.length; i++) {
+            const node = mutation.addedNodes[i]
+
+            if (!isFetched && node.classList && node.classList[0] === fireKeyword) {
+                fetchData()
+                isFetched = true
+                observer.disconnect()
+            }
+        }
+    })
+})
+
+const letsObserve = () => {
+    if (fireKeyword === null) {
+        fetchData()
+        observer.disconnect()
+    } else {
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true,
+            attributes: false,
+            characterData: false
+        })
+    }
+}
+
 if (currentId) {
-    setTimeout(fetchData, 2000)
+    letsObserve()
+} else {
+    observer.disconnect()
 }
