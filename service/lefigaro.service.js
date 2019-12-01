@@ -2,7 +2,7 @@ const getIdFromLefigaroUrl = () => {
     const url = window.location.toString()
     // I need to replace the regex lookbehinds that chrome accept to something more dirty
     const match1 = url.split('annonces\/annonce-')
-    const match2 = match1 && match1[1].split('.html')
+    const match2 = match1.length > 1 && match1[1].split('.html')
     return match2 ? match2[0] : null
 }
 

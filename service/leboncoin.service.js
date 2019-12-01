@@ -1,10 +1,13 @@
 const getIdFromLeboncoinUrl = () => {
     const url = window.location.toString()
-    const match = url.match(/\d+(?=.htm)/g)
-    return match ? match[0] : null
+    // I need to replace the regex lookbehinds that chrome accept to something more dirty
+    const match1 = url.split('locations/')
+    const match1bis = url.split('vi/')
+    const match2 = match1.length > 1 && match1[1].split('.htm/') || match1bis.length > 1 && match1bis[1].split('.htm/')
+    return match2 ? match2[0] : null
 }
 
-const leboncoinFireKeyword = () => 'trackable'
+const leboncoinFireKeywords = () => ['trackable']
 
 const leboncoinScraping = () => {
     const titles = [...document.querySelectorAll('[data-qa-id=adview_title] h1, [data-qa-id=adview_title] h3')]

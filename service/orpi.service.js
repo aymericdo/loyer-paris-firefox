@@ -2,7 +2,7 @@ const getIdFromOrpiUrl = () => {
     const url = window.location.toString()
     // I need to replace the regex lookbehinds that chrome accept to something more dirty
     const match1 = url.split('annonce-location-appartement')
-    const match2 = match1 && match1[1].split('/')
+    const match2 = match1.length > 1 && match1[1].split('/')
     const match3 = match2 && match2[0].split('-')
     return match3 ? match3.slice(-2).join('-') : null
 }
