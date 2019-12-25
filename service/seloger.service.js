@@ -1,7 +1,9 @@
 const getIdFromSelogerUrl = () => {
     const url = window.location.toString()
-    const match = url.match(/\d+(?=.htm)/g)
-    return match ? match[0] : null
+    // I need to replace the regex lookbehinds that chrome accept to something more dirty
+    const match1 = url.split('/')
+    const match2 = match1.length > 1 && match1.includes('locations') && match1.includes('appartement') && match1[match1.length - 1].match(/\d+/g)
+    return match2 ? match2[0] : null
 }
 
 const selogerFireKeywords = () => ['description-bien']
