@@ -53,7 +53,7 @@ const getDataFromLogicimmoDOM = () => {
         }
     })
 
-    if (!title) {
+    if (!title && !description && !price && !cityLabel) {
         return null
     }
 
