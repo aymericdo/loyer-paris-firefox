@@ -27,9 +27,8 @@ const fireKeywords =
                 : null
 
 const activateTab = () => {
-    if (browser.storage && currentAd) {
-        browser.storage.sync.set({ ad: { ...currentAd } })
-        browser.runtime.sendMessage({ message: 'activateIcon' })
+    if (currentAd) {
+        browser.runtime.sendMessage({ message: 'activateIcon', ad: { ...currentAd } })
     }
 }
 
