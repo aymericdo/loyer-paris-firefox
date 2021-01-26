@@ -3,7 +3,9 @@ const getIdFromPapUrl = () => {
     // I need to replace the regex lookbehinds that chrome accept to something more dirty
     const match1 = url.split('-')
     const match2 = match1 && match1[match1.length - 1][0] === 'r' && match1[match1.length - 1].match(/\d+/g)
-    return match2 ? `r${match2[0]}` : null
+    const match3 = match1 && match1[0]
+    const isOk = match3 && match3.split('/')[match3.split('/').length - 2] === 'annonces' && match3.split('/')[match3.split('/').length - 1] === 'appartement'
+    return match2 && isOk ? `r${match2[0]}` : null
 }
 
 const papScraping = () => {
