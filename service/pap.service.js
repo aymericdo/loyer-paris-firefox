@@ -5,7 +5,8 @@ const getIdFromPapUrl = () => {
     const match2 = match1 && match1[match1.length - 1][0] === 'r' && match1[match1.length - 1].match(/\d+/g)
     const match3 = match1 && match1[0]
     const isOk = match3 && match3.split('/')[match3.split('/').length - 2] === 'annonces' && match3.split('/')[match3.split('/').length - 1] === 'appartement'
-    return match2 && isOk ? `r${match2[0]}` : null
+    const sectionName = document.querySelector('[itemprop=itemListElement] > a[itemprop=item] > span[itemprop=name]')
+    return match2 && sectionName.textContent.trim().includes('Location') && isOk ? `r${match2[0]}` : null
 }
 
 const papScraping = () => {
