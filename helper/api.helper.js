@@ -5,7 +5,7 @@ const middlewareJson = (response) => {
 }
 
 const middlewareErrorCatcher = (response) => {
-    if (response.status && response.status !== 200) {
+    if (Object.keys(response).length === 0 || response.status && response.status !== 200) {
         throw response
     } else {
         return response
