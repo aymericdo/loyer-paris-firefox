@@ -1,6 +1,6 @@
 {
   "name": "Encadrement",
-  "version": "5.1.5",
+  "version": "6.0.0",
   "description": "Soyez informés du prix maximum des annonces (basé sur l'encadrement des loyers) sur tous vos sites d'annonces préférés",
   "permissions": [
     "*://encadrement-loyers.herokuapp.com/*"
@@ -29,18 +29,34 @@
         "https://www.logic-immo.com/*",
         "https://immobilier.lefigaro.fr/*",
         "https://www.facebook.com/marketplace/*",
-        "https://www.orpi.com/*"
+        "https://www.orpi.com/*",
+        "https://gensdeconfiance.com/*",
+        "https://www.bellesdemeures.com/*",
+        "https://www.lux-residence.com/*",
+        "https://www.bienici.com/*",
+        "https://www.fnaim.fr/*",
+        "https://www.superimmo.com/*"
       ],
       "js": [
         "helper/api.helper.js",
-        "service/seloger.service.js",
-        "service/leboncoin.service.js",
-        "service/loueragile.service.js",
-        "service/pap.service.js",
-        "service/logicimmo.service.js",
-        "service/lefigaro.service.js",
-        "service/facebook.service.js",
-        "service/orpi.service.js",
+        "helper/draggable.helper.js",
+        "service/website.js",
+        "service/website/seloger.service.js",
+        "service/website/leboncoin.service.js",
+        "service/website/jinka.service.js",
+        "service/website/pap.service.js",
+        "service/website/logicimmo.service.js",
+        "service/website/lefigaro.service.js",
+        "service/website/facebook.service.js",
+        "service/website/orpi.service.js",
+        "service/website/gensdeconfiance.service.js",
+        "service/website/bellesdemeures.service.js",
+        "service/website/luxresidence.service.js",
+        "service/website/bienici.service.js",
+        "service/website/fnaim.service.js",
+        "service/website/superimmo.service.js",
+        "service/fetcher.js",
+        "service/customize.js",
         "custom.js"
       ],
       "run_at": "document_end",
@@ -48,6 +64,10 @@
         "custom.css"
       ]
     }
+  ],
+  "web_accessible_resources": [
+    "images/*.png",
+    "images/*.svg"
   ],
   "icons": {
     "16": "images/favicon-16x16.png",

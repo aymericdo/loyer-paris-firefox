@@ -1,73 +1,387 @@
-span.title-addon {
-    display: inline-block !important;
-    margin-right: 4px !important;
+:root {
+  --strokeInfoIconUrl: '';
+  --twitterIconUrl: '';
+  --facebookIconUrl: '';
+  --instagramIconUrl: '';
+  --yellow: #fdcd56;
+  --green: #0be881;
 }
 
-span.title-addon.-illegal {
-    background-color: #FDCD56;
-    color: #0f0f0f;
-    border: 1px solid transparent;
-    border-radius: 20px;
-    padding: 4px 8px;
-    font-weight: bold;
+.-flag {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: max-content;
+  height: 50px;
+  font-size: 25px;
+  border-radius: 20px;
+  padding: 0 10px;
+  box-shadow: -10px 10px 6px rgba(0, 0, 0, 0.6);
+  font-weight: 500;
+  font-family: "Garnett", "Avenir", Helvetica, Arial, sans-serif;
+  color: #0f0f0f;
+  border: 2px solid var(--green);
+  z-index: 9999999;
+  transition: all 250ms ease-out;
+  transition-property: background-position, color, box-shadow;
+  animation: shake-animation 20s ease infinite;
+  user-select: none;
+
+  background-image: linear-gradient(to left, var(--green), var(--green), #ffff, #ffff);
+  background-size: 300%;
+  background-origin: border-box, border-box;
 }
 
-span.title-addon.-legal {
-    background-color: #07c5075e;
-    border: 1px solid transparent;
-    border-radius: 22px;
-    padding: 4px 6px;
+.-flag::after {
+  content: '';
+  background-image: var(--faviconIconUrl);
+  background-size: contain;
+  border-radius: 50%;
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  top: -10px;
+  right: -10px;
+  cursor: move;
 }
 
-span.title-addon.-legal.-leboncoin,
-span.title-addon.-legal.-loueragile {
-    padding: 2px 10px;
+.-flag.-illegal {
+  border-color: var(--yellow);
+  background-image: linear-gradient(to left, var(--yellow), var(--yellow), #ffff, #ffff);
+  background-size: 300%;
+  background-origin: border-box, border-box;
 }
 
-.bad-price {
-    display: inline-block;
-    text-decoration: line-through;
+.-flag:active {
+  cursor: grabbing;
+  box-shadow: -6px 6px 5px rgba(0, 0, 0, 0.6);
 }
 
-.bad-price * {
-    display: inline-block;
-    text-decoration: line-through;
+.-flag.-clicked,
+.-flag:hover {
+  background-position: 100% 0;
+  box-shadow: -8px 8px 5px rgba(0, 0, 0, 0.6);
 }
 
-.good-price {
-    display: inline-block;
-    margin-left: 10px;
+.-flag:not(.-illegal).-clicked,
+.-flag:not(.-illegal):hover {
+  color: #fff;
 }
 
-span.-description-helper {
-    position: fixed;
-    display: flex;
-    align-items: center;
-    z-index: 9999999;
-    top: 0.875em;
-    right: 0.875em;
-    height: 3.5em;
-    border: 1px solid transparent;
-    border-radius: 4px;
-    font-size: 16px;
-    font-weight: bold;
-    color: #fff;
-    padding: 0.875em 1em;
-    visibility: visible;
+.-flag.-clicked {
+  animation: none;
+}
+
+.-flag.-illegal:hover {
+  background-position: 100% 0;
+}
+
+.-flag > .-flag-price {
+  position: absolute;
+  right: 0;
+  bottom: -16px;
+  font-size: 14px;
+  border-radius: 10px;
+  padding: 0 10px;
+  box-shadow: -10px 10px 6px rgb(0 0 0 / 60%);
+  font-weight: 500;
+  background: white;
+  border: 1px solid black;
+}
+
+.-flag > .-flag-description {
+  position: absolute;
+  top: 0px;
+  height: 480px;
+  width: 432px;
+  display: block;
+  background-color: #050505;
+  color: white;
+  font-size: 16px;
+  border-radius: 5px;
+  z-index: 9999998;
+  font-weight: 500;
+  animation: description-closing 200ms ease-out;
+  animation-fill-mode: forwards;
+}
+
+.-flag > .-flag-description > section {
+  max-height: 100%;
+  overflow-y: auto;
+}
+
+.-flag > .-flag-description > section > .inset {
+  padding: 24px;
+}
+
+.-flag > .-flag-description > section > .inset > h1 {
+  display: inline-block;
+  color: var(--yellow);
+  padding-top: 16px;
+  padding-left: 24px;
+  font-size: 24px;
+  margin: 0;
+}
+
+.-flag > .-flag-description > section > .inset > h1.title::after {
+  content: "";
+  position: relative;
+  background-color: var(--yellow);
+  width: 100%;
+  height: 3px;
+  left: 0;
+  display: flow-root;
+  bottom: 0;
+  transform: none;
+}
+
+.-flag > .-flag-description > section > .inset > h2.subtitle {
+  color: #b1b1b1;
+  padding: 9px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0;
+  margin-top: 24px;
+}
+
+.-flag > .-flag-description > section > .inset > h2.subtitle::after {
+  /* Thanks fnaim... */
+  display: none;
+}
+
+.-flag > .-flag-description > section > .inset > ul {
+  background-color: #222222;
+  border: solid 1px transparent;
+  border-radius: 10px;
+  padding: 24px;
+  margin: 0;
+}
+
+.-flag > .-flag-description > section > .inset > ul > li {
+  display: flex;
+  justify-content: space-between;
+  list-style-type: none;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.-flag > .-flag-description > section > .inset > ul > li:last-child {
+  margin-bottom: 0;
+}
+
+.-flag > .-flag-description > section > .inset > ul > li > .key {
+  color: #7e7e7e;
+}
+
+.-flag > .-flag-description > section > .inset > ul > li > .value {
+  color: #e1e1e1;
+  list-style-type: none;
+}
+
+.-flag > .-flag-description > section > .inset > p.-info {
+  background-color: #5691fd;
+  color: #e4edfd;
+  border-radius: 10px;
+  font-size: 13px;
+  padding: 24px;
+  padding-left: 48px;
+  margin: 24px 0;
+}
+
+.-flag > .-flag-description > section > .inset > p.-info > a {
+  color: #e1e1e1;
+  font-weight: 500;
+}
+
+.-flag > .-flag-description > section > .inset > p.-info > a:hover {
+  color: #d3d3d3;
+}
+
+.-flag > .-flag-description > section > .inset > p.-info > b {
+  display: flex;
+  color: #ffffff;
+  position: relative;
+  margin-bottom: 4px;
+}
+
+.-flag > .-flag-description > section > .inset > p.-info > b::before {
+  content: var(--strokeInfoIconUrl);
+  position: absolute;
+  left: -26px;
+}
+
+.-flag > .-flag-description > section > .inset > p.-info .social-networks {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.-flag > .-flag-description > section > .inset > p.-info .social-networks > a {
+  display: flex;
+  padding: 5px;
+  border-radius: 8px;
+  background-color: transparent;
+  transition: background-color 250ms ease-in-out;
+}
+
+.-flag > .-flag-description > section > .inset > p.-info .social-networks > a:hover {
+  background-color: white;
+}
+
+.-flag > .-flag-description > section > .inset > p.-info i {
+  width: 25px;
+  height: 25px;
+
+}
+
+.-flag > .-flag-description > section > .inset > p.-info i::before {
+  display: inline-block;
+  background-size: 100%;
+  width: 25px;
+  height: 25px;
+  content: "";
+}
+
+.-flag > .-flag-description > section > .inset > p.-info i.twitter-logo::before {
+  background-image: var(--twitterIconUrl);
+}
+.-flag > .-flag-description > section > .inset > p.-info i.instagram-logo::before {
+  background-image: var(--instagramIconUrl);
+}
+.-flag > .-flag-description > section > .inset > p.-info i.facebook-logo::before {
+  background-image: var(--facebookIconUrl);
+}
+
+.-flag > .-flag-description.-open {
+  left: -1em;
+  animation: description-opening 200ms ease-out;
+  animation-fill-mode: forwards;
+}
+
+.-description-helper {
+  transition: all 500ms ease-in-out;
+  transition-property: transform, top;
+  transform: translate(0, -200%);
+  box-sizing: initial;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  z-index: 9999997;
+  width: max-content;
+  height: 16px;
+  right: 14px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  padding: 0.875em 1.25em;
+}
+
+.-description-helper.-legal {
+  background: var(--green);
+}
+
+.-description-helper.-illegal {
+  background-color: var(--yellow);
+  color: #0f0f0f;
+}
+
+.-description-helper.-begin {
+  transform: translate(0, -200%);
+}
+
+.-description-helper.-middle {
+  transform: translate(0, 0);
+}
+
+.-description-helper.-hide {
+  transform: translate(200%, 0);
+}
+
+.-description-helper > a.update-link {
+  margin: 0 5px;
+  color: #0f0f0f;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.-description-helper > a.update-link:hover {
+  color: #050505;
+}
+
+@keyframes shake-animation {
+  0% {
+    -webkit-transform: translate(0px, 0px) rotate(0deg);
+  }
+  10% {
+    -webkit-transform: translate(0px, 0px) rotate(0deg);
+  }
+  10.1% {
+    -webkit-transform: translate(2px, 1px) rotate(0deg);
+  }
+  10.2% {
+    -webkit-transform: translate(-1px, -2px) rotate(-1deg);
+  }
+  10.2% {
+    -webkit-transform: translate(-3px, 0px) rotate(1deg);
+  }
+  10.3% {
+    -webkit-transform: translate(0px, 2px) rotate(0deg);
+  }
+  10.4% {
+    -webkit-transform: translate(1px, -1px) rotate(1deg);
+  }
+  10.5% {
+    -webkit-transform: translate(-1px, 2px) rotate(-1deg);
+  }
+  10.6% {
+    -webkit-transform: translate(-3px, 1px) rotate(0deg);
+  }
+  10.7% {
+    -webkit-transform: translate(2px, 1px) rotate(-1deg);
+  }
+  10.8% {
+    -webkit-transform: translate(-1px, -1px) rotate(1deg);
+  }
+  10.9% {
+    -webkit-transform: translate(2px, 2px) rotate(0deg);
+  }
+  11.0% {
+    -webkit-transform: translate(1px, -2px) rotate(-1deg);
+  }
+  11.1% {
+    -webkit-transform: translate(0px, 0px) rotate(0deg);
+  }
+  100% {
+    -webkit-transform: translate(0px, 0px) rotate(0deg);
+  }
+}
+
+@keyframes description-closing {
+  0% {
+    transform: translate(-100%, 0);
     opacity: 1;
-}
-
-span.-description-helper.-legal {
-    background: #07c507de;
-}
-
-span.-description-helper.-illegal {
-    background-color: #FDCD56;
-    color: #0f0f0f;
-}
-
-span.-description-helper.-hide {
-    visibility: hidden;
+  }
+  100% {
+    transform: translate(0, 0);
     opacity: 0;
-    transition: visibility 0s 1s, opacity 1s linear;
+  }
+}
+
+@keyframes description-opening {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-100%, 0);
+    opacity: 1;
+  }
 }
