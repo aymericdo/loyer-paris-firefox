@@ -63,8 +63,6 @@ class WebsiteService {
 
   getData() {
     const body = document.querySelector("html > body");
-    return {
-      data: JSON.stringify(body.outerHTML),
-    };
+    return JSON.stringify(body.outerHTML);
   }
 }
