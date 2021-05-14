@@ -1,7 +1,6 @@
 class FacebookWebsite extends WebsiteService {
   constructor() {
     super();
-    // this.fireKeyword = "div[data-pagelet=root]";
     this.currentDomain = WebsiteService.getDomain();
   }
 
@@ -12,7 +11,7 @@ class FacebookWebsite extends WebsiteService {
   }
 
   getData() {
-    const body = document.querySelector("html div[data-pagelet=root]");
+    const body = document.querySelector("html [id^=mount_]");
 
     if (!body) return null;
 
