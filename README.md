@@ -14,3 +14,5 @@ Disponnible aussi sur Chrome : https://github.com/aymericdo/loyer-paris-chrome
 ## Firefox add-ons store
 
 https://addons.mozilla.org/en-US/firefox/addon/encadrement-loyers-paris/
+
+# zip -r Archive.zip . -x '*.git*' "*.DS_Store*"
