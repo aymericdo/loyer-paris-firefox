@@ -1,4 +1,4 @@
-const SERVER = 'https://backend.aymericdo.ovh/encadrement-back'
+const SERVER = 'https://backend.aymericdo.ovh/encadrement-back';
 // const SERVER = "http://localhost:3000";
 
 const PLATFORM = "firefox";
