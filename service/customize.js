@@ -37,14 +37,14 @@ class CustomizeService {
 
   resetCustomization() {
     if (this.adFlag) {
-      this.cptDescriptionHelper -= 1;
       this.adFlag.remove();
     }
 
     if (this.firstDescriptionHelper) {
-      this.cptDescriptionHelper -= 1;
       this.firstDescriptionHelper.remove();
     }
+
+    this.cptDescriptionHelper = 0
 
     this.adFlagListener && this.adFlagListener();
   }
@@ -53,9 +53,13 @@ class CustomizeService {
     this.resetCustomization();
     this.cptDescriptionHelper += 1;
 
+    const isFake = currentAd.isFake;
+    let pFakeInfo = null
+
     // Badge
     this.adFlag = document.createElement("div");
-    this.adFlag.classList.add("-flag");
+    this.adFlag.classList.add("encadrement-flag");
+    
     if (!currentAd.isLegal) {
       this.adFlag.textContent = "Non conforme";
       this.adFlag.classList.add("-illegal");
@@ -63,10 +67,36 @@ class CustomizeService {
       this.adFlag.textContent = "Conforme";
     }
 
+    if (isFake) {
+      this.adFlag.classList.add("-fake");
+      const fakeFlag = document.createElement("span");
+      fakeFlag.classList.add("fake");
+      fakeFlag.textContent = `* Cette ville n'applique actuellement pas l'encadrement des loyers.`
+      const fakeFlag2 = document.createElement("span");
+      fakeFlag2.classList.add("fake");
+      fakeFlag2.textContent = `Cette simulation est à but d'expérimentation.`
+      this.adFlag.appendChild(fakeFlag)
+      this.adFlag.appendChild(fakeFlag2)
+
+      pFakeInfo = document.createElement("p");
+      pFakeInfo.classList.add('-warning');
+      const bFakeInfo = document.createElement("b");
+      bFakeInfo.classList.add('-icon');
+      bFakeInfo.textContent = "Attention";
+      pFakeInfo.appendChild(bFakeInfo);
+
+      pFakeInfo.innerHTML += `Cette ville n'applique pas l'encadrement des loyers.</br>`
+      pFakeInfo.innerHTML += `L'extension est ici active de manière exceptionnelle à des fins d'expérimentations.</br>`
+      pFakeInfo.innerHTML += `Vous ne pouvez donc pas modifier votre loyer, quel que soit le résultat de notre analyse.</br></br>`
+      pFakeInfo.innerHTML += `<b>Méthodologie :</b> </br>`
+      pFakeInfo.innerHTML += `Faire comme si l'encadrement était mis en application en prenant comme base de référence `
+      pFakeInfo.innerHTML += `la quartier le moins cher de Paris, à partir des critères réellement trouvés dans l'annonce.`
+    }
+
     if (!currentAd.isLegal) {
-      // price flag
+      // price encadrement-flag
       const adFlagPrice = document.createElement("span");
-      adFlagPrice.classList.add("-flag-price");
+      adFlagPrice.classList.add("encadrement-flag-price");
       adFlagPrice.textContent = `Prix max estimé ${currentAd.computedInfo.maxAuthorized.value}€`;
       this.adFlag.appendChild(adFlagPrice);
     }
@@ -75,29 +105,36 @@ class CustomizeService {
     this.moveDescriptionBanner();
     this.adFlagListener = dragElement(this.adFlag);
 
-    const faviconIconUrl = browser.runtime.getURL("images/favicon-128x128.png");
+    const faviconIconUrl = chrome.runtime.getURL(
+      "images/favicon-128x128.png"
+    );
     document.documentElement.style.setProperty(
       "--faviconIconUrl",
       `url(${faviconIconUrl})`
     );
-    const strokeInfoIconUrl = browser.runtime.getURL("images/stroke-info.svg");
+    const strokeInfoIconUrl = chrome.runtime.getURL("images/stroke-info.svg");
     document.documentElement.style.setProperty(
       "--strokeInfoIconUrl",
       `url(${strokeInfoIconUrl})`
     );
-    const instagramIconUrl = browser.runtime.getURL(
+    const solidBangIconUrl = chrome.runtime.getURL("images/solid-bang.svg");
+    document.documentElement.style.setProperty(
+      "--solidBangIconUrl",
+      `url(${solidBangIconUrl})`
+    );
+    const instagramIconUrl = chrome.runtime.getURL(
       "images/instagram-logo.png"
     );
     document.documentElement.style.setProperty(
       "--instagramIconUrl",
       `url(${instagramIconUrl})`
     );
-    const facebookIconUrl = browser.runtime.getURL("images/facebook-logo.png");
+    const facebookIconUrl = chrome.runtime.getURL("images/facebook-logo.png");
     document.documentElement.style.setProperty(
       "--facebookIconUrl",
       `url(${facebookIconUrl})`
     );
-    const twitterIconUrl = browser.runtime.getURL("images/twitter-logo.png");
+    const twitterIconUrl = chrome.runtime.getURL("images/twitter-logo.png");
     document.documentElement.style.setProperty(
       "--twitterIconUrl",
       `url(${twitterIconUrl})`
@@ -110,20 +147,24 @@ class CustomizeService {
     const h1 = document.createElement("h1");
     h1.textContent = "Encadrement";
     h1.classList.add("title");
+
     const h2First = document.createElement("h2");
     h2First.classList.add("subtitle");
     h2First.textContent = "Informations présentes dans l'annonce";
+
     const detectedInfo = document.createElement("ul");
     const h2Second = document.createElement("h2");
     h2Second.textContent = "Calcul du montant estimé du loyer";
     h2Second.classList.add("subtitle");
     const computedInfo = document.createElement("ul");
+
     const pInfo = document.createElement("p");
     pInfo.classList.add("-info");
     const bInfo = document.createElement("b");
+    bInfo.classList.add('-icon');
     bInfo.textContent = "Informations";
     pInfo.appendChild(bInfo);
-  
+
     if (currentAd.moreInfo) {
       const a = document.createElement('a');
       a.setAttribute('href', currentAd.moreInfo)
@@ -137,7 +178,7 @@ class CustomizeService {
     } else {
       pInfo.innerHTML += `Plus d\'info dans la popup de config de l\'extension ou sur notre site : <a href="https://encadrement-loyers.fr/" target="_blank">https://encadrement-loyers.fr/</a></br>`
     }
-  
+
     const socialNetInfo = document.createElement("div");
     socialNetInfo.classList.add("social-networks");
     socialNetInfo.innerHTML += `<a href="https://www.instagram.com/encadrementloyers/" target="_blank"><i class="instagram-logo"></i></a>`;
@@ -157,6 +198,7 @@ class CustomizeService {
     const adDescriptionSectionInset = document.createElement("div");
     adDescriptionSectionInset.classList.add("inset");
     adDescriptionSectionInset.appendChild(h1);
+    if (pFakeInfo) adDescriptionSectionInset.appendChild(pFakeInfo);
     adDescriptionSectionInset.appendChild(h2First);
     adDescriptionSectionInset.appendChild(detectedInfo);
     adDescriptionSectionInset.appendChild(h2Second);
@@ -167,7 +209,7 @@ class CustomizeService {
     adDescriptionSection.appendChild(adDescriptionSectionInset);
     adDescription.appendChild(adDescriptionSection);
 
-    adDescription.classList.add("-flag-description");
+    adDescription.classList.add("encadrement-flag-description");
     this.adFlag.appendChild(adDescription);
 
     // Toggle description opening
@@ -225,7 +267,7 @@ class CustomizeService {
       });
   }
 
-  addDescriptionHelper(text, isLegal, timer = 8000) {
+  addDescriptionHelper(text, isLegal) {
     const adDescriptionHelper = document.createElement("div");
     adDescriptionHelper.classList.add("-description-helper");
     adDescriptionHelper.classList.add("-begin");
@@ -237,13 +279,6 @@ class CustomizeService {
       adDescriptionHelper.classList.remove("-begin");
       adDescriptionHelper.classList.add("-middle");
 
-      const link = adDescriptionHelper.querySelector("a.update-link");
-      if (link) {
-        link.addEventListener("click", () => {
-          browser.runtime.sendMessage({ message: "redirectSettings" });
-        });
-      }
-
       this.moveDescriptionBanner();
 
       this.cptDescriptionHelper += 1;
@@ -256,49 +291,7 @@ class CustomizeService {
       setTimeout(() => {
         this.moveDescriptionBanner(false);
       });
-    }, timer);
-
-    return adDescriptionHelper;
-  }
-
-  addUpdateBanner() {
-    const adDescriptionHelper = document.createElement("div");
-    adDescriptionHelper.classList.add("-description-helper");
-    adDescriptionHelper.classList.add("-begin");
-    adDescriptionHelper.classList.add("-illegal");
-
-    // const updateLink = document.createElement("a");
-    // updateLink.classList.add("update-link");
-    // updateLink.textContent = "Cliquez ici";
-    // updateLink.addEventListener('click', () => {
-    //   browser.runtime.sendMessage({ message: "redirectSettings" });
-    // });
-
-    const adDescriptionHelperPart1 = document.createElement("span");
-    adDescriptionHelperPart1.textContent = `L'extension Encadrement n'est plus à jour. Entrez l'url "about:config" pour avoir la dernière version.`;
-
-    adDescriptionHelper.appendChild(adDescriptionHelperPart1);
-    // adDescriptionHelper.appendChild(updateLink);
-
-    document.body.appendChild(adDescriptionHelper);
-
-    setTimeout(() => {
-      adDescriptionHelper.classList.remove("-begin");
-      adDescriptionHelper.classList.add("-middle");
-
-      this.moveDescriptionBanner();
-
-      this.cptDescriptionHelper += 1;
-    });
-
-    setTimeout(() => {
-      adDescriptionHelper.classList.remove("-middle");
-      adDescriptionHelper.classList.add("-hide");
-      this.cptDescriptionHelper -= 1;
-      setTimeout(() => {
-        this.moveDescriptionBanner(false);
-      });
-    }, 20000);
+    }, 8000);
 
     return adDescriptionHelper;
   }
@@ -308,13 +301,12 @@ class CustomizeService {
       ...document.querySelectorAll("div.-description-helper.-middle"),
     ];
     adDescriptionHelperList.forEach((adDescriptionHelper, i) => {
-      adDescriptionHelper.style.top = `${
-        56 *
-          (up
-            ? this.cptDescriptionHelper - i
-            : this.cptDescriptionHelper - i - 1) +
+      adDescriptionHelper.style.top = `${56 *
+        (up
+          ? this.cptDescriptionHelper - i
+          : this.cptDescriptionHelper - i - 1) +
         20 * 2
-      }px`;
+        }px`;
     });
   }
 
@@ -369,17 +361,13 @@ class CustomizeService {
         );
         break;
       }
-      case "outdated": {
-        this.addUpdateBanner();
-        break;
-      }
       case "other": {
         break;
       }
       default: {
         this.addDescriptionHelper(
           error.msg ||
-            "Erreur : nous allons résoudre ce problème pour cette annonce sous peu",
+          "Erreur : nous allons résoudre ce problème pour cette annonce sous peu",
           false
         );
         break;

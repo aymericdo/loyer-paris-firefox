@@ -11,6 +11,7 @@ class WebsiteService {
         .split("/")[2]
         .replace("www.", "")
         .replace("immobilier.", "")
+        .replace("fr.", "")
         .split(".")[0];
     } catch {
       return null;
@@ -31,7 +32,7 @@ class WebsiteService {
         return new LefigaroWebsite();
       case "orpi":
         return new OrpiWebsite();
-      case "facebook": // ici
+      case "facebook":
         return new FacebookWebsite();
       case "gensdeconfiance":
         return new GensdeconfianceWebsite();

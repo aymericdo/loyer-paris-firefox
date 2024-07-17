@@ -1,6 +1,6 @@
 {
   "name": "Encadrement",
-  "version": "6.1.2",
+  "version": "6.1.3",
   "description": "Soyez informés du prix maximum des annonces (basé sur l'encadrement des loyers) sur tous vos sites d'annonces préférés",
   "permissions": [
     "*://backend.aymericdo.ovh/encadrement-back/*"
@@ -14,17 +14,11 @@
     },
     "default_popup": "popup.html"
   },
-  "background": {
-    "scripts": [
-      "background.js"
-    ]
-  },
   "content_scripts": [
     {
       "matches": [
         "https://www.seloger.com/*",
         "https://www.leboncoin.fr/*",
-        "https://www.jinka.fr/*",
         "https://www.pap.fr/*",
         "https://www.logic-immo.com/*",
         "https://immobilier.lefigaro.fr/*",
@@ -36,15 +30,17 @@
         "https://www.bienici.com/*",
         "https://www.fnaim.fr/*",
         "https://www.superimmo.com/*",
-        "https://www.locservice.fr/*"
+        "https://www.locservice.fr/*",
+        "https://www.avendrealouer.fr/*",
+        "https://fr.foncia.com/*"
       ],
       "js": [
         "helper/api.helper.js",
         "helper/draggable.helper.js",
+        "helper/wait-for-elm.helper.js",
         "service/website.js",
         "service/website/seloger.service.js",
         "service/website/leboncoin.service.js",
-        "service/website/jinka.service.js",
         "service/website/pap.service.js",
         "service/website/logicimmo.service.js",
         "service/website/lefigaro.service.js",
@@ -57,6 +53,8 @@
         "service/website/fnaim.service.js",
         "service/website/superimmo.service.js",
         "service/website/locservice.service.js",
+        "service/website/foncia.service.js",
+        "service/website/avendrealouer.service.js",
         "service/fetcher.js",
         "service/customize.js",
         "custom.js"
